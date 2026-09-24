@@ -212,7 +212,8 @@
       "track_widths": [
         0.0,
         0.45,
-        1.0
+        1.0,
+        3.0
       ],
       "tuning_pattern_settings": {
         "diff_pair_defaults": {
@@ -741,7 +742,7 @@
         "uuid": "c628afd9-6ab1-4902-bf9f-dfaf5ff762c2"
       }
     ],
-    "used_designators": "C1-5,#PWR3,#PWR7",
+    "used_designators": "#FLG1-3,#PWR3",
     "variants": []
   },
   "sheets": [
