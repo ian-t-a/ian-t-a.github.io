@@ -54,11 +54,3 @@ Collaborated on mechanical design decisions for the laser mounting system to ens
 Currently working alongside mechanical team members to add a rotational degree of freedom to the laser mount using a servo motor. Combined with the stepper motor, this will allow the system to continuously track a targeted weed while the Amiga platform remains in motion, significantly improving the robot's field speed and operational efficiency.
 
 ---
-
-## Repository Contents
-
-| Folder | Contents |
-|--------|----------|
-| `kicad/` | Interface board schematic and PCB layout |
-| `python/` | Computer vision and servo tracking code |
-| `docs/` | Electrical schematics and wiring diagrams |
