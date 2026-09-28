@@ -154,10 +154,6 @@ Several layers of protection are included throughout the design.
 
 The P-channel MOSFET blocks current when the input is connected backwards.
 
-### Input Overvoltage
-
-The SMAJ15A TVS diode clamps high-voltage transients, while the input fuse provides additional protection.
-
 ### Thermal Protection
 
 The LT3083 and LT3091 devices have built-in thermal shutdown. Heatsinks and forced-air cooling are used to keep the devices well below their thermal limits during normal operation.
@@ -177,18 +173,6 @@ Instead of putting all of the heatsinks in one location, the regulators are dist
 * **LM2596:** Mounted in large copper pour with lots of stitching vias for improved heat dissipation
 
 Air enters through the front of the enclosure, passes over the main regulator heatsinks, and exits through the rear exhaust fans.
-
-### Worst-Case Dissipation
-
-At 3A output with a 10V output voltage:
-
-```text
-(13.7V - 10V) × 3A = 11.1W
-```
-
-This results in significant heat that must be removed by the heatsinks and fans.
-
-The selected heatsinks are rated around **1°C/W**, with the goal of keeping regulator junction temperatures below approximately 80°C during normal operation.
 
 ---
 
@@ -249,11 +233,8 @@ Thermal management affected the enclosure, PCB layout, and component placement f
 
 ### PCB Layout Matters in Power Electronics
 
-Using a 4-layer PCB allowed the design to have dedicated ground and power planes, which helped separate the switching converter from the lower-noise analog circuitry.
+Using a 4-layer PCB allowed the design to have dedicated ground planes, which helped separate the switching converter from the lower-noise analog circuitry.
 
-### Dedicated Current-Sense ICs
-
-Using the INA199 made the current-sensing portion of the design simpler and cleaner than building the same function from a discrete op-amp circuit.
 
 ---
 
