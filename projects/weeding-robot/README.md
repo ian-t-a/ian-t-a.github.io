@@ -23,7 +23,7 @@ Our current goal with this is to have the computer vision spot a weed then the s
 There are some limitations to this system. One being that some chemicals have different methods of action. Some of these methods of action require the chemical to enter the plant via the root system. We want to avoid this, as it may cause EPA compliance issues. Another issue is that some chemicals need to be applied more generously than others. When spot spraying, only a small dose is applied to the plant, which may not be effective with chemicals that require higher dosing. We are currently testing these limitations to determine the most effective approach to addressing these concerns.
 
 **Targeted Laser System**
-Eliminates weeds growing directly between the horseradish plants where chemicals and mechanical methods are either ineffective or not permmited.
+Eliminates weeds growing directly between the horseradish plants where chemicals and mechanical methods are either ineffective or not permitted.
 
 ---
 
