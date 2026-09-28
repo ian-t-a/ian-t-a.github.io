@@ -47,7 +47,3 @@ I am interested in embedded systems and PCB design and layout, with a focus on a
 | Farm Hand | Anderson Farms | Jan 2020 – Aug 2024 |
 
 ---
-
-## Resume
-
-📄 [View Resume (PDF)](docs/Ian_Anderson_Resume.pdf)
