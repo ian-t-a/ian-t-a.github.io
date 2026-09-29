@@ -1,245 +1,99 @@
-# DIY Adjustable ±10V / 3A Bench Power Supply
-
-[View the KiCad Project](https://kicanvas.org/?repo=https%3A%2F%2Fgithub.com%2Fian-t-a%2Fian-t-a.github.io%2Ftree%2Fmain%2Fprojects%2Fpower-supply%2Fkicad)
-
----
-
 ## Project Overview
 
-I designed and built a **dual-output bench power supply** capable of producing adjustable **+10V and -10V outputs at up to 3A per rail**.
+I designed and built a dual-output bench power supply with adjustable +10V and -10V outputs at up to 3A per rail. The goal was to build a supply useful for electronics prototyping while including the protection, monitoring, and thermal management needed for higher-current operation.
 
-The goal was to build a supply that was useful for electronics prototyping while also including the protection, monitoring, and thermal management needed for higher-current operation.
-
-Both rails have independent:
-
-* Voltage adjustment
-
-* Current limiting
-
-* Voltage monitoring
-
-* Current monitoring
-
-The design also includes reverse-polarity protection, overvoltage protection, short-circuit protection, and thermal management.
+Both rails have independent voltage adjustment, current limiting, voltage monitoring, and current monitoring. The design also includes reverse-polarity protection, overvoltage protection, and thermal management.
 
 ---
 
 ## Design Requirements
 
-The main design targets were:
-
-| Requirement        | Target                                     |
-| ------------------ | ------------------------------------------ |
-| Positive output    | 0 to +10V                                  |
-| Negative output    | 0 to -10V                                  |
-| Output current     | 3A per rail                                |
-| Input              | 13.7V, 40A                                 |
-| Voltage monitoring | Both rails                                 |
-| Current monitoring | Both rails                                 |
-| Protection         | Reverse polarity, overcurrent, overvoltage |
-| Cooling            | Forced-air cooling                         |
-| PCB                | 4-layer, 2oz outer copper                  |
+| Requirement | Target |
+|-------------|--------|
+| Positive output | 0 to +10V |
+| Negative output | 0 to -10V |
+| Output current | 3A per rail |
+| Input | 13.7V, 40A |
+| Voltage monitoring | Both rails |
+| Current monitoring | Both rails |
+| Protection | Reverse polarity, overcurrent, overvoltage |
+| Cooling | Forced-air cooling |
+| PCB | 4-layer, 2oz outer copper |
 
 ---
 
-# Input Protection
+## Input Protection
 
-The input stage is designed to protect the rest of the supply from common wiring mistakes and voltage transients.
+The input stage protects the supply from wiring mistakes and voltage transients using three main components:
 
-### Reverse-Polarity Protection
+- **15A fuse** for primary overcurrent protection
+- **SMAJ15A TVS diode** to clamp voltage transients
+- **SI4403DDY P-channel MOSFET** to block reverse polarity
 
-The input protection circuit uses three main components:
-
-* **15A fuse** for primary overcurrent protection
-
-* **SMAJ15A TVS diode** to clamp voltage transients
-
-* **SI4403DDY P-channel MOSFET** to block reverse polarity
-
-The MOSFET is combined with an **8.2V Zener clamp** and a **10kΩ pull-down resistor** to keep the gate-to-source voltage within a safe range.
-
-This means that if the input supply is accidentally connected backwards, the MOSFET prevents the reverse voltage from reaching the rest of the circuit.
+If the input is connected backwards, the MOSFET prevents the reverse voltage from reaching the rest of the circuit.
 
 ---
 
-# Positive 10V Rail
+## Positive Rail
 
-The positive rail uses **LT3083 linear regulators**.
-
-The LT3083 was a good fit for this design because it uses a current-source-based voltage reference rather than a traditional feedback divider.
-
-### Key Features
-
-* 3A-capable linear regulator
-
-* Programmable output voltage
-
-* Integrated current limiting
+The positive rail uses **LT3083** linear regulators. The LT3083 uses a current-source-based voltage reference rather than a traditional feedback divider, which makes allows voltage regulation down to 0V.
 
 ---
 
-# Negative 10V Rail
+## Negative Rail
 
 The negative rail uses two stages.
 
-### LM2596 Inverting Converter
+**LM2596 Inverting Converter**
+Generates approximately -11V from the +13.7V input to provide headroom for the negative regulator stage.
 
-The LM2596S-ADJ is used to generate approximately **-11V** from the +13.7V input.
-
-This provides enough headroom for the negative linear regulators.
-
-The converter uses:
-
-* 100µH output inductor
-
-* SS34 Schottky diode
-
-* 1nF C0G feedforward capacitor
-
-* 8.87kΩ / 1kΩ feedback network
-
-* 68µF and 47µF filtering capacitors
-
-### LT3091 Output Stage
-
-Two **LT3091 regulators** are connected in parallel to produce the final negative output.
-
-The LT3091 was selected because it includes programmable current limiting and current monitoring.
-
-Each regulator has a small **10mΩ impedance matched trace** to help with current sharing.
+**LT3091 Output Stage**
+Two LT3091 regulators in parallel produce the final negative output. The LT3091 was chosen for its programmable current limiting and current monitoring. Each regulator has a small 10mΩ impedance-matched trace to help with current sharing.
 
 ---
 
-# Current Limiting & Monitoring
+## Current & Voltage Monitoring
 
-Both rails use dedicated current sensing circuits.
+A 7.5mΩ shunt resistor measures current on each rail. Each rail has its own DSN-VC288 dual 7-segment meter showing output voltage and current in real time.
 
-### Current Sensing
-
-A **7.5mΩ shunt resistor** measures the current flowing through each rail. This is done by use of the proprietary voltage and current sensors.
+The meters use isolated power converters so the negative rail can be measured without creating unwanted ground loops.
 
 ---
 
-# Voltage & Current Display
+## Thermal Management
 
-Each output rail has its own **DSN-VC288 dual 7-segment meter**.
+The linear regulators can dissipate significant power at high current, so thermal management was a big part of the design. The regulators are spread across the board to improve airflow rather than concentrating all the heat in one spot.
 
-Each meter displays:
-
-* Output voltage
-
-* Output current
-
-The meters use:
-
-* Red display for voltage
-
-* Blue display for current
-
-The meters are configured for the supply's 0–10V and 0–3A operating range.
-
-### Isolated Meter Power
-
-The positive and negative meters use isolated power converters so that the negative rail can be measured without creating unwanted ground-reference connections.
-
-The negative meter is especially dependent on this isolation because its measurement is referenced to a voltage below system ground.
+- **LT3083 pair:** Near the fan intake
+- **LT3091 pair:** Downstream of the positive rail heatsinks
+- **LM2596:** On a large copper pour with stitching vias
 
 ---
 
-# Protection & Safety
+## PCB Design
 
-Several layers of protection are included throughout the design.
+The board uses a 4-layer stackup with 2oz outer copper.
 
-### Reverse Polarity
-
-The P-channel MOSFET blocks current when the input is connected backwards.
-
-### Thermal Protection
-
-The LT3083 and LT3091 devices have built-in thermal shutdown. Heatsinks and forced-air cooling are used to keep the devices well below their thermal limits during normal operation.
-
-# Thermal Management
-
-Thermal management was a major part of the design because the linear regulators can dissipate significant power at high current.
-
-Instead of putting all of the heatsinks in one location, the regulators are distributed across the enclosure to improve airflow.
-
-### Heatsink Layout
-
-* **LT3083 pair:** Mounted near the main fan intake
-
-* **LT3091 pair:** Mounted downstream of the positive rail heatsinks
-
-* **LM2596:** Mounted in large copper pour with lots of stitching vias for improved heat dissipation
-
-Air enters through the front of the enclosure, passes over the main regulator heatsinks, and exits through the rear exhaust fans.
-
----
-
-# PCB Design
-
-The power supply uses a **4-layer PCB with 2oz outer copper**.
-
-### Layer Stackup
-
-| Layer   | Purpose                  |
-| ------- | ------------------------ |
+| Layer | Purpose |
+|-------|---------|
 | Layer 1 | Signals and power traces |
-| Layer 2 | Ground plane             |
-| Layer 3 | Ground plane             |
+| Layer 2 | Ground plane |
+| Layer 3 | Ground plane |
 | Layer 4 | Signals and return paths |
 
-The 4-layer design helps with both power distribution and noise management.
-
-The inner planes provide low-impedance power and ground paths while helping keep the switching converter's high-frequency noise away from the more sensitive analog circuits.
-
-### Component Placement
-
-The PCB layout was organized around both electrical and thermal considerations.
-
-Key placement decisions included:
-
-* Input protection and main fuse placed near the input connector
-
-* LM2596 switching converter separated from sensitive analog circuitry
-
-* Current-sense circuitry kept away from noisy switching sections
-
-* Heatsink clearance included in the PCB layout
-
-* Thermal vias used around larger thermal pads
-
-* Signal and ground planes arranged to reduce noise coupling
-
-* Large amounts of stitching vias used across the board to improve heat dissipation and reduce EMI.
+The dedicated ground planes keep the switching converter's noise away from the more sensitive analog circuits. The LM2596 is placed away from the analog circuitry, and stitching vias are used across the board to improve heat dissipation and reduce EMI.
 
 ---
 
-# Lessons Learned
+## Lessons Learned
 
-### Paralleling Linear Regulators
-
-One of the most interesting parts of the design was learning how regulators such as the LT3091 can be paralleled using their current-source-based architecture.
-
-This made current sharing much simpler than it would be with traditional feedback-divider regulators.
-
-### Isolation Matters
-
-The isolated supply for the negative voltage meter was important for avoiding ground-reference problems when measuring a rail below ground.
-
-### Thermal Design Has to Start Early
-
-Thermal management affected the enclosure, PCB layout, and component placement from the beginning. The regulator placement and airflow path ended up being just as important as the electrical design.
-
-### PCB Layout Matters in Power Electronics
-
-Using a 4-layer PCB allowed the design to have dedicated ground planes, which helped separate the switching converter from the lower-noise analog circuitry.
-
+- **Paralleling regulators** using a current-source architecture is much simpler than paralleling traditional feedback-divider types
+- **Isolated meter supplies** are necessary when measuring a rail referenced below ground
+- **Thermal design has to start early** — regulator placement and airflow path matter as much as the electrical design
+- **4-layer PCBs make a real difference** in power electronics by providing clean ground planes and separating noisy switching circuits from analog ones
 
 ---
 
 ## Project Takeaway
 
-This project gave me experience designing a power system from the ground up, including the **regulator architecture, protection circuits, current sensing, thermal management, and PCB layout.
-
-It was also a good exercise in balancing electrical performance with practical design constraints such as heat, noise, component placement, and usability.
+This project gave me end-to-end experience designing a power system, including regulator architecture, protection circuits, current sensing, thermal management, and PCB layout. It was a good exercise in balancing electrical performance with practical constraints like heat, noise, and component placement.
