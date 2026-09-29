@@ -24,7 +24,7 @@ I am interested in embedded systems and PCB design and layout, with a focus on a
 | Project | Description | Tools |
 |---------|-------------|-------|
 | [Autonomous Weeding Robot](projects/weeding-robot/) | Custom PCB and embedded firmware for a laser-based weeding robot | KiCad, C++, Python, OpenCV |
-| [Lab Bench Power Supply](projects/bench-power-supply/) | Dual-rail adjustable bench supply with custom 3D-printed enclosure | KiCad, LTspice, Fusion 360 |
+| [Lab Bench Power Supply](projects/power-supply/) | Dual-rail adjustable bench supply with custom 3D-printed enclosure | KiCad, LTspice, Fusion 360 |
 
 ---
 
