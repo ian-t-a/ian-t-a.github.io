@@ -64,7 +64,7 @@ The meters use isolated power converters so the negative rail can be measured wi
 
 ## Thermal Management
 
-The linear regulators can dissipate significant power at high current, so thermal management was a big part of the design. The regulators are spread across the board to improve airflow rather than concentrating all the heat in one spot.
+The linear regulators can dissipate significant power at high current, so thermal management was a big part of the design. The regulators are spread across the board to improve airflow rather than concentrating all the heat in one spot. They are all placed with a future case and air cooling system in mind. In the future I plan on making 3D printed case with mounts for fans for active cooling. So the components are placed in a way to maximize air flow across the heat sinks and other compenents.
 
 - **LT3083 pair:** Near the fan intake
 - **LT3091 pair:** Downstream of the positive rail heatsinks
